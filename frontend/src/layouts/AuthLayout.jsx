@@ -5,7 +5,7 @@ function AuthLayout({ title, subtitle, children }) {
   return (
     <div className="auth-page">
       <div className="auth-illustration">
-        <h1>Umer Library</h1>
+        <h1>Library</h1>
         <p>Discover, borrow, and manage your books in one modern online library.</p>
       </div>
       <div className="auth-panel">

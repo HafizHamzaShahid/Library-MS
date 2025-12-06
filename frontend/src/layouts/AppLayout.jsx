@@ -11,7 +11,7 @@ function AppLayout() {
           <span role="img" aria-label="books">
             📚
           </span>
-          <span>Umer Library</span>
+          <span>Library</span>
         </div>
         <nav className="sidebar-nav">
           <NavLink to="/app" end>

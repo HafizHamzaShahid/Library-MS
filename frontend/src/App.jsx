@@ -1,11 +1,11 @@
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom'
 import './App.css'
-import { AuthProvider } from './context/AuthContext'
+// import { AuthProvider } from './context/AuthContext' // Commented out - single user, no authentication needed
 import { LibraryProvider } from './context/LibraryContext'
-import RequireAuth from './components/RequireAuth'
+// import RequireAuth from './components/RequireAuth' // Commented out - single user, no authentication needed
 import AppLayout from './layouts/AppLayout'
-import LoginPage from './pages/LoginPage'
-import SignupPage from './pages/SignupPage'
+// import LoginPage from './pages/LoginPage' // Commented out - single user, no login needed
+// import SignupPage from './pages/SignupPage' // Commented out - single user, no signup needed
 import DashboardPage from './pages/DashboardPage'
 import BooksPage from './pages/BooksPage'
 import LoansPage from './pages/LoansPage'
@@ -15,26 +15,26 @@ import NotFoundPage from './pages/NotFoundPage'
 function App() {
   return (
     <BrowserRouter>
-      <AuthProvider>
+      {/* <AuthProvider> */} {/* Commented out - single user, no authentication needed */}
         <LibraryProvider>
           <Routes>
-            <Route path="/" element={<Navigate to="/login" replace />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/signup" element={<SignupPage />} />
+            <Route path="/" element={<Navigate to="/app" replace />} />
+            {/* <Route path="/login" element={<LoginPage />} /> */} {/* Commented out - single user, no login needed */}
+            {/* <Route path="/signup" element={<SignupPage />} /> */} {/* Commented out - single user, no signup needed */}
 
-            <Route element={<RequireAuth />}>
+            {/* <Route element={<RequireAuth />}> */} {/* Commented out - single user, no authentication needed */}
               <Route path="/app" element={<AppLayout />}>
                 <Route index element={<DashboardPage />} />
                 <Route path="books" element={<BooksPage />} />
                 <Route path="books/add" element={<AddBookPage />} />
                 <Route path="loans" element={<LoansPage />} />
               </Route>
-            </Route>
+            {/* </Route> */} {/* Commented out - single user, no authentication needed */}
 
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </LibraryProvider>
-      </AuthProvider>
+      {/* </AuthProvider> */} {/* Commented out - single user, no authentication needed */}
     </BrowserRouter>
   )
 }

@@ -1,13 +1,13 @@
-import { useAuth } from '../context/AuthContext'
+// import { useAuth } from '../context/AuthContext' // Commented out - single user, no authentication needed
 import { useLibrary } from '../context/LibraryContext'
 
 function DashboardPage() {
-  const { user } = useAuth()
+  // const { user } = useAuth() // Commented out - single user, no authentication needed
   const { stats } = useLibrary()
 
   return (
     <div className="page">
-      <h1>Welcome, {user?.name}</h1>
+      <h1>Welcome to Your Library</h1>
       <p className="page-subtitle">
         This is your library overview. From here you can browse books and manage
         your loans.

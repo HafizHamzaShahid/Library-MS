@@ -9,7 +9,7 @@ let _db;
 const mongoConnect = (callback) => {
   const uri = `mongodb://${DB_HOST}:${DB_PORT}/${DB_NAME}`;
   
-  MongoClient.connect(uri, { useUnifiedTopology: true })
+  MongoClient.connect(uri)
     .then(client => {
       console.log("Connected to MongoDB");
       _db = client.db();

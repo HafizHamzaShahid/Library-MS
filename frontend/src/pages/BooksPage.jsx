@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useLibrary } from '../context/LibraryContext'
 
 function BooksPage() {
-  const { books, borrowBook } = useLibrary()
+  const { books, borrowBook, loading, error } = useLibrary()
   const [selectedBook, setSelectedBook] = useState(null)
 
   const openBorrowModal = (book) => setSelectedBook(book)
@@ -31,6 +31,11 @@ function BooksPage() {
       <p className="page-subtitle">
         Explore the collection and check availability at a glance.
       </p>
+      {loading && <p>Loading books...</p>}
+      {error && <div className="alert alert-error">{error}</div>}
+      {!loading && !error && books.length === 0 && (
+        <p>No books available. Be the first to suggest a book!</p>
+      )}
       <div className="books-grid">
         {books.map((book) => (
           <article key={book.id} className="book-card">

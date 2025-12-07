@@ -1,8 +1,8 @@
 import { Link, NavLink, Outlet } from 'react-router-dom'
-import { useAuth } from '../context/AuthContext'
+// import { useAuth } from '../context/AuthContext' // Commented out - single user, no authentication needed
 
 function AppLayout() {
-  const { user, logout } = useAuth()
+  // const { user, logout } = useAuth() // Commented out - single user, no authentication needed
 
   return (
     <div className="app-shell">
@@ -30,10 +30,10 @@ function AppLayout() {
             <Link to="/app">Home</Link>
           </div>
           <div className="topbar-right">
-            <span className="user-pill">{user?.name}</span>
-            <button type="button" className="btn-secondary" onClick={logout}>
-              Logout
-            </button>
+            {/* <span className="user-pill">{user?.name}</span> */} {/* Commented out - single user, no authentication needed */}
+            {/* <button type="button" className="btn-secondary" onClick={logout}> */} {/* Commented out - single user, no authentication needed */}
+              {/* Logout */} {/* Commented out - single user, no authentication needed */}
+            {/* </button> */} {/* Commented out - single user, no authentication needed */}
           </div>
         </header>
         <main className="content">

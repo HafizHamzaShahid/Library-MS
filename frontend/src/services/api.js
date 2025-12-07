@@ -1,70 +1,85 @@
 import axios from 'axios'
 
-// Configure this baseURL to match your backend later
+// Configure this baseURL to match your backend
 const api = axios.create({
-  baseURL: 'http://localhost:5000/api',
+  baseURL: 'http://localhost:5000',
 })
 
-// For now we mock responses so you can focus on the frontend
-const fakeDelay = (result, ms = 400) =>
-  new Promise((resolve) => setTimeout(() => resolve(result), ms))
+// Commented out - single user, no multiple users needed
+// export const authApi = {
+//   async login({ email, password }) {
+//     if (!email || !password) {
+//       throw new Error('Email and password are required')
+//     }
+//     const user = {
+//       id: 'u1',
+//       name: 'Demo User',
+//       email,
+//     }
+//     const token = 'fake-jwt-token'
+//     return fakeDelay({ data: { user, token } })
+//   },
 
-export const authApi = {
-  async login({ email, password }) {
-    // Replace with: return api.post('/auth/login', { email, password })
-    if (!email || !password) {
-      throw new Error('Email and password are required')
-    }
-    // very basic fake user
-    const user = {
-      id: 'u1',
-      name: 'Demo User',
-      email,
-    }
-    const token = 'fake-jwt-token'
-    return fakeDelay({ data: { user, token } })
-  },
-
-  async signup({ name, email, password }) {
-    if (!name || !email || !password) {
-      throw new Error('All fields are required')
-    }
-    const user = {
-      id: 'u2',
-      name,
-      email,
-    }
-    const token = 'fake-jwt-token'
-    return fakeDelay({ data: { user, token } })
-  },
-}
+//   async signup({ name, email, password }) {
+//     if (!name || !email || !password) {
+//       throw new Error('All fields are required')
+//     }
+//     const user = {
+//       id: 'u2',
+//       name,
+//       email,
+//     }
+//     const token = 'fake-jwt-token'
+//     return fakeDelay({ data: { user, token } })
+//   },
+// }
 
 export const booksApi = {
+  // Get all books from backend
   async list() {
-    const books = [
-      {
-        id: 'b1',
-        title: 'Clean Code',
-        author: 'Robert C. Martin',
-        year: 2008,
-        available: true,
-      },
-      {
-        id: 'b2',
-        title: 'The Pragmatic Programmer',
-        author: 'Andrew Hunt, David Thomas',
-        year: 1999,
-        available: false,
-      },
-      {
-        id: 'b3',
-        title: 'You Don’t Know JS Yet',
-        author: 'Kyle Simpson',
-        year: 2020,
-        available: true,
-      },
-    ]
-    return fakeDelay({ data: books })
+    try {
+      const response = await api.get('/books/get-books')
+      // Transform backend response to match frontend format
+      const books = Array.isArray(response.data) ? response.data : []
+      return {
+        data: books.map(book => ({
+          id: book.id || book._id?.toString() || `book-${Date.now()}`,
+          title: book.title,
+          author: book.author,
+          year: book.year,
+          status: book.status || 'available'
+        }))
+      }
+    } catch (error) {
+      console.error('Error fetching books:', error)
+      // Return empty array on error instead of throwing
+      return { data: [] }
+    }
+  },
+
+  // Add a new book (suggest a book)
+  async addBook({ title, author, year }) {
+    try {
+      const response = await api.post('/books/add-book', {
+        title,
+        author,
+        year
+      })
+      // Transform backend response to match frontend format
+      const bookData = response.data || {}
+      return {
+        data: {
+          id: bookData.id || bookData._id?.toString() || `book-${Date.now()}`,
+          title: bookData.title,
+          author: bookData.author,
+          year: bookData.year,
+          status: bookData.status || 'available'
+        }
+      }
+    } catch (error) {
+      console.error('Error adding book:', error)
+      throw error
+    }
   },
 }
 

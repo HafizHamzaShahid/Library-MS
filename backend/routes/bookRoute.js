@@ -2,20 +2,29 @@ const express = require("express");
 const router = express.Router();
 const Book = require("../models/bookModel");
 
-// Add a book
+// Add a book (suggest a book)
 router.post("/add-book", async (req, res) => {
-  const book = new Book(
-    req.body.title,
-    req.body.writer,
-    req.body.publishedYear,
-    req.body.isAvailable
-  );
-
   try {
+    const { title, author, year } = req.body;
+    
+    // Validate required fields
+    if (!title || !author || !year) {
+      return res.status(400).send({ 
+        message: "Title, author, and year are required" 
+      });
+    }
+
+    const book = new Book(
+      title.trim(),
+      author.trim(),
+      parseInt(year),
+      'available' // New books are always available
+    );
+
     const savedBook = await book.save();
-    res.status(201).send(savedBook);
+    res.status(201).json(savedBook);
   } catch (err) {
-    res.status(400).send({ message: err.message });
+    res.status(400).json({ message: err.message });
   }
 });
 
@@ -23,9 +32,9 @@ router.post("/add-book", async (req, res) => {
 router.get("/get-books", async (req, res) => {
   try {
     const books = await Book.fetchAll();
-    res.status(200).send(books);
+    res.status(200).json(books);
   } catch (err) {
-    res.status(400).send({ message: err.message });
+    res.status(500).json({ message: err.message });
   }
 });
 
@@ -33,9 +42,12 @@ router.get("/get-books", async (req, res) => {
 router.get("/get-book/:id", async (req, res) => {
   try {
     const book = await Book.getBookById(req.params.id);
-    res.status(200).send(book);
+    if (!book) {
+      return res.status(404).json({ message: "Book not found" });
+    }
+    res.status(200).json(book);
   } catch (err) {
-    res.status(400).send({ message: err.message });
+    res.status(400).json({ message: err.message });
   }
 });
 

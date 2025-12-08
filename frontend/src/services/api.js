@@ -83,6 +83,49 @@ export const booksApi = {
   },
 }
 
+export const loansApi = {
+  async list() {
+    const response = await api.get('/loans')
+    const loans = Array.isArray(response.data) ? response.data : []
+    return {
+      data: loans.map((loan) => ({
+        id: loan.id || loan._id?.toString(),
+        bookId: loan.bookId,
+        title: loan.title,
+        dueDate: loan.dueDate,
+        status: loan.status || 'On time',
+      })),
+    }
+  },
+
+  async borrow(bookId) {
+    const response = await api.post('/loans/borrow', { bookId })
+    return {
+      data: {
+        book: {
+          id: response.data.book.id,
+          title: response.data.book.title,
+          author: response.data.book.author,
+          year: response.data.book.year,
+          status: response.data.book.status,
+        },
+        loan: {
+          id: response.data.loan.id || response.data.loan._id?.toString(),
+          bookId: response.data.loan.bookId,
+          title: response.data.loan.title,
+          dueDate: response.data.loan.dueDate,
+          status: response.data.loan.status || 'On time',
+        },
+      },
+    }
+  },
+
+  async returnLoan(loanId) {
+    const response = await api.post(`/loans/return/${loanId}`)
+    return { data: response.data }
+  },
+}
+
 export default api
 
 

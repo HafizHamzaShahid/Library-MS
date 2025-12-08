@@ -5,6 +5,7 @@ const mongoClient = require('./assets/database/MongoDB').mongoConnect;
 
 // const userRouter = require("./routes/userRoutes"); // Commented out - single user, no multiple users
 const bookRouter = require("./routes/bookRoute");
+const loanRouter = require("./routes/loanRoute");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -18,6 +19,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // app.use("/user", userRouter); // Commented out - single user, no multiple users
 app.use("/books", bookRouter);
+app.use("/loans", loanRouter);
 
 mongoClient(() => {
     console.log("MongoDB Connected");

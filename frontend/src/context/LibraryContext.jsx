@@ -1,6 +1,6 @@
 import { createContext, useContext, useMemo, useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
-import { booksApi } from '../services/api'
+import { booksApi, loansApi } from '../services/api'
 
 const LibraryContext = createContext(null)
 
@@ -12,59 +12,69 @@ export function LibraryProvider({ children }) {
 
   // Fetch books from backend on mount
   useEffect(() => {
-    const fetchBooks = async () => {
+    const fetchData = async () => {
       try {
         setLoading(true)
         setError(null)
-        const response = await booksApi.list()
-        setBooks(response.data || [])
+        const [booksRes, loansRes] = await Promise.all([
+          booksApi.list(),
+          loansApi.list(),
+        ])
+        setBooks(booksRes.data || [])
+        setLoans(loansRes.data || [])
       } catch (err) {
-        console.error('Error fetching books:', err)
-        setError(err.message || 'Failed to fetch books')
-        setBooks([]) // Set empty array on error
+        console.error('Error fetching data:', err)
+        setError(err.message || 'Failed to fetch data')
+        setBooks([])
+        setLoans([])
       } finally {
         setLoading(false)
       }
     }
 
-    fetchBooks()
+    fetchData()
   }, [])
 
   const addBook = async ({ title, author, year }) => {
     try {
       const response = await booksApi.addBook({ title, author, year })
       const newBook = response.data
-      // Add the new book to the state
       setBooks((prev) => [newBook, ...prev])
     } catch (err) {
       console.error('Error adding book:', err)
-      throw err // Re-throw so the component can handle the error
+      throw err
     }
   }
 
-  const borrowBook = (bookId) => {
-    setBooks((prev) =>
-      prev.map((b) =>
-        b.id === bookId && b.status === 'available'
-          ? { ...b, status: 'checked_out' }
-          : b,
-      ),
-    )
-    const book = books.find((b) => b.id === bookId)
-    if (book && book.status === 'available') {
-      const today = new Date()
-      const due = new Date(today)
-      due.setDate(today.getDate() + 14)
-      setLoans((prev) => [
-        ...prev,
-        {
-          id: `l-${book.id}-${Date.now()}`,
-          bookId: book.id,
-          title: book.title,
-          dueDate: due.toISOString().slice(0, 10),
-          status: 'On time',
-        },
-      ])
+  const borrowBook = async (bookId) => {
+    try {
+      const response = await loansApi.borrow(bookId)
+      const { book, loan } = response.data
+      setBooks((prev) =>
+        prev.map((b) =>
+          b.id === book.id ? { ...b, status: book.status } : b,
+        ),
+      )
+      setLoans((prev) => [...prev, loan])
+    } catch (err) {
+      console.error('Error borrowing book:', err)
+      throw err
+    }
+  }
+
+  const returnBook = async (loanId) => {
+    try {
+      const response = await loansApi.returnLoan(loanId)
+      const returnedBookId = response.data.bookId
+      setBooks((prev) =>
+        prev.map((b) =>
+          b.id === returnedBookId ? { ...b, status: 'available' } : b,
+        ),
+      )
+      setLoans((prev) => prev.filter((loan) => loan.id !== loanId))
+    } catch (err) {
+      console.error('Error returning book:', err)
+      throw err
     }
   }
 
@@ -84,6 +94,7 @@ export function LibraryProvider({ children }) {
         loans,
         addBook,
         borrowBook,
+        returnBook,
         stats,
         loading,
         error,

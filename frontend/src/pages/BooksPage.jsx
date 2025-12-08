@@ -4,13 +4,23 @@ import { useLibrary } from '../context/LibraryContext'
 function BooksPage() {
   const { books, borrowBook, loading, error } = useLibrary()
   const [selectedBook, setSelectedBook] = useState(null)
+  const [borrowError, setBorrowError] = useState('')
+  const [borrowLoading, setBorrowLoading] = useState(false)
 
   const openBorrowModal = (book) => setSelectedBook(book)
   const closeBorrowModal = () => setSelectedBook(null)
-  const confirmBorrow = () => {
+  const confirmBorrow = async () => {
     if (!selectedBook) return
-    borrowBook(selectedBook.id)
-    closeBorrowModal()
+    try {
+      setBorrowError('')
+      setBorrowLoading(true)
+      await borrowBook(selectedBook.id)
+      closeBorrowModal()
+    } catch (err) {
+      setBorrowError(err.message || 'Failed to borrow book')
+    } finally {
+      setBorrowLoading(false)
+    }
   }
 
   const getStatusLabel = (status) => {
@@ -33,6 +43,7 @@ function BooksPage() {
       </p>
       {loading && <p>Loading books...</p>}
       {error && <div className="alert alert-error">{error}</div>}
+      {borrowError && <div className="alert alert-error">{borrowError}</div>}
       {!loading && !error && books.length === 0 && (
         <p>No books available. Be the first to suggest a book!</p>
       )}
@@ -83,8 +94,9 @@ function BooksPage() {
                 type="button"
                 className="btn-primary btn-sm"
                 onClick={confirmBorrow}
+                disabled={borrowLoading}
               >
-                Confirm
+                {borrowLoading ? 'Borrowing...' : 'Confirm'}
               </button>
             </div>
           </div>

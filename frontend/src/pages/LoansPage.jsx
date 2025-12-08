@@ -1,22 +1,22 @@
-import { useState } from 'react'
-import { useLibrary } from '../context/LibraryContext'
+import { useState } from "react";
+import { useLibrary } from "../context/LibraryContext";
 
 function LoansPage() {
-  const { loans, returnBook } = useLibrary()
-  const [actionError, setActionError] = useState('')
-  const [returningId, setReturningId] = useState(null)
+  const { loans, returnBook } = useLibrary();
+  const [actionError, setActionError] = useState("");
+  const [returningId, setReturningId] = useState(null);
 
   const handleReturn = async (loanId) => {
     try {
-      setActionError('')
-      setReturningId(loanId)
-      await returnBook(loanId)
+      setActionError("");
+      setReturningId(loanId);
+      await returnBook(loanId);
     } catch (err) {
-      setActionError(err.message || 'Failed to return book')
+      setActionError(err.message || "Failed to return book");
     } finally {
-      setReturningId(null)
+      setReturningId(null);
     }
-  }
+  };
 
   return (
     <div className="page">
@@ -33,26 +33,30 @@ function LoansPage() {
           <span>Action</span>
         </div>
         {loans.map((loan) => (
-          <div key={loan.id} className="table-row">
-            <span>{loan.title}</span>
-            <span>{loan.dueDate}</span>
-            <span
-              className={
-                loan.status === 'Overdue'
-                  ? 'badge badge-danger'
-                  : 'badge badge-success'
-              }
-            >
-              {loan.status}
-            </span>
-            <button
-              type="button"
-              className="btn-secondary btn-sm"
-              onClick={() => handleReturn(loan.id)}
-              disabled={returningId === loan.id}
-            >
-              {returningId === loan.id ? 'Returning...' : 'Return'}
-            </button>
+          <div key={loan.id} className="table-row-wrapper">
+            <div className="table-row">
+              <span>{loan.title}</span>
+              <span>{loan.dueDate}</span>
+              <div className="status-and-action">
+                <span
+                  className={
+                    loan.status === "Overdue"
+                      ? "badge badge-danger"
+                      : "badge badge-success"
+                  }
+                >
+                  {loan.status}
+                </span>
+                <button
+                  type="button"
+                  className="btn-secondary btn-sm"
+                  onClick={() => handleReturn(loan.id)}
+                  disabled={returningId === loan.id}
+                >
+                  {returningId === loan.id ? "Returning..." : "Return"}
+                </button>
+              </div>
+            </div>
           </div>
         ))}
         {loans.length === 0 && (
@@ -65,9 +69,7 @@ function LoansPage() {
         )}
       </div>
     </div>
-  )
+  );
 }
 
-export default LoansPage
-
-
+export default LoansPage;

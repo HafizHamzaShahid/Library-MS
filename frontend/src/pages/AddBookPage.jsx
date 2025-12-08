@@ -16,9 +16,17 @@ function AddBookPage() {
     const trimmedTitle = newBook.title.trim()
     const trimmedAuthor = newBook.author.trim()
     const parsedYear = Number(newBook.year)
+    const currentYear = new Date().getFullYear()
+    const isValidYear =
+      Number.isInteger(parsedYear) && parsedYear >= 1450 && parsedYear <= currentYear
     
     if (!trimmedTitle || !trimmedAuthor || !parsedYear) {
       setError('Please fill in all fields')
+      return
+    }
+
+    if (!isValidYear) {
+      setError(`Year must be an integer between 1450 and ${currentYear}`)
       return
     }
 

@@ -14,10 +14,23 @@ router.post("/add-book", async (req, res) => {
       });
     }
 
+    const numericYear = parseInt(year, 10);
+    const currentYear = new Date().getFullYear();
+    if (
+      Number.isNaN(numericYear) ||
+      !Number.isInteger(numericYear) ||
+      numericYear < 1450 ||
+      numericYear > currentYear
+    ) {
+      return res.status(400).send({
+        message: `Year must be a valid integer between 1450 and ${currentYear}`,
+      });
+    }
+
     const book = new Book(
       title.trim(),
       author.trim(),
-      parseInt(year),
+      numericYear,
       'available' // New books are always available
     );
 

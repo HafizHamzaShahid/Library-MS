@@ -1,39 +1,31 @@
 import { Link, NavLink, Outlet } from 'react-router-dom'
-// import { useAuth } from '../context/AuthContext' // Commented out - single user, no authentication needed
 
 function AppLayout() {
-  // const { user, logout } = useAuth() // Commented out - single user, no authentication needed
-
   return (
     <div className="app-shell">
       <aside className="sidebar">
         <div className="sidebar-logo">
-          <span role="img" aria-label="books">
-            📚
+          <span role="img" aria-label="fashion">
+            👗
           </span>
-          <span>Library</span>
+          <span>Fashion Shop</span>
         </div>
         <nav className="sidebar-nav">
           <NavLink to="/app" end>
             Dashboard
           </NavLink>
-          <NavLink to="/app/books" end>
-            Browse Books
-          </NavLink>
-          <NavLink to="/app/books/add">Suggest Book</NavLink>
-          <NavLink to="/app/loans">Books borrowed</NavLink>
+          <NavLink to="/app/add-product">Add Product</NavLink>
+          <NavLink to="/app/update-product">Update Product</NavLink>
+          <NavLink to="/app/delete-product">Delete Product</NavLink>
+          <NavLink to="/app/season-totals">Season Totals</NavLink>
+          <NavLink to="/app/top-units">Top Units</NavLink>
+          <NavLink to="/app/rating-condition">Rating Condition</NavLink>
         </nav>
       </aside>
       <div className="main-area">
         <header className="topbar">
           <div className="breadcrumbs">
             <Link to="/app">Home</Link>
-          </div>
-          <div className="topbar-right">
-            {/* <span className="user-pill">{user?.name}</span> */} {/* Commented out - single user, no authentication needed */}
-            {/* <button type="button" className="btn-secondary" onClick={logout}> */} {/* Commented out - single user, no authentication needed */}
-              {/* Logout */} {/* Commented out - single user, no authentication needed */}
-            {/* </button> */} {/* Commented out - single user, no authentication needed */}
           </div>
         </header>
         <main className="content">
@@ -45,5 +37,4 @@ function AppLayout() {
 }
 
 export default AppLayout
-
 

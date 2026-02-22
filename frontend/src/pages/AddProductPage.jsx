@@ -70,7 +70,7 @@ function AddProductPage() {
     <div className="page">
       <h1>Add Fashion Product</h1>
       <p className="page-subtitle">
-        Use this form to add a new record to the FashionShopData collection (Task 2.1 / 1.5).
+         (Task 2.1 / 1.5).
       </p>
       <form className="book-form" onSubmit={handleSubmit}>
         {error && <div className="alert alert-error">{error}</div>}

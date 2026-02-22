@@ -36,7 +36,7 @@ function TopUnitsPage() {
     <div className="page">
       <h1>Top Selling Products</h1>
       <p className="page-subtitle">
-        Display the first 10 records where Units Sold is greater than a given value for a season
+        
         (Task 2.5 / 1.9).
       </p>
       <form className="book-form" onSubmit={handleSubmit}>

@@ -33,7 +33,7 @@ function DeleteProductPage() {
     <div className="page">
       <h1>Delete Fashion Product</h1>
       <p className="page-subtitle">
-        Remove a record for a given Product Name from FashionShopData (Task 2.4 / 1.7).
+         (Task 2.4 / 1.7).
       </p>
       <form className="book-form" onSubmit={handleSubmit}>
         {error && <div className="alert alert-error">{error}</div>}

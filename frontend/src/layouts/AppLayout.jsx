@@ -11,9 +11,6 @@ function AppLayout() {
           <span>Fashion Shop</span>
         </div>
         <nav className="sidebar-nav">
-          <NavLink to="/app" end>
-            Dashboard
-          </NavLink>
           <NavLink to="/app/add-product">Add Product</NavLink>
           <NavLink to="/app/update-product">Update Product</NavLink>
           <NavLink to="/app/delete-product">Delete Product</NavLink>
@@ -23,11 +20,7 @@ function AppLayout() {
         </nav>
       </aside>
       <div className="main-area">
-        <header className="topbar">
-          <div className="breadcrumbs">
-            <Link to="/app">Home</Link>
-          </div>
-        </header>
+        <header className="topbar" />
         <main className="content">
           <Outlet />
         </main>

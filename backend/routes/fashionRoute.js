@@ -203,7 +203,7 @@ router.get("/top-units", async (req, res) => {
 // 1.10 - All products where average Customer Rating for a given Season meets a condition
 router.get("/rating-condition", async (req, res) => {
   try {
-    const { season, operator = "gte", value } = req.query;
+    const { season, operator = "gt", value } = req.query;
     if (!season || value === undefined) {
       return res.status(400).json({
         message: "season and value query parameters are required.",
@@ -236,15 +236,14 @@ router.get("/rating-condition", async (req, res) => {
       case "gt":
         conditionMet = avg > threshold;
         break;
-      case "lte":
-        conditionMet = avg <= threshold;
+      case "eq":
+        conditionMet = avg === threshold;
         break;
       case "lt":
         conditionMet = avg < threshold;
         break;
-      case "gte":
       default:
-        conditionMet = avg >= threshold;
+        conditionMet = avg > threshold;
         break;
     }
 

@@ -3,7 +3,7 @@ import { fashionApi } from '../services/api'
 
 function RatingConditionPage() {
   const [season, setSeason] = useState('')
-  const [operator, setOperator] = useState('gte')
+  const [operator, setOperator] = useState('gt')
   const [value, setValue] = useState('')
   const [result, setResult] = useState(null)
   const [loading, setLoading] = useState(false)
@@ -40,7 +40,7 @@ function RatingConditionPage() {
     <div className="page">
       <h1>Average Rating Condition</h1>
       <p className="page-subtitle">
-        Display all products for a season where the average Customer Rating meets a condition
+        
         (Task 2.6 / 1.10).
       </p>
       <form className="book-form" onSubmit={handleSubmit}>
@@ -58,9 +58,8 @@ function RatingConditionPage() {
             onChange={(event) => setOperator(event.target.value)}
             disabled={loading}
           >
-            <option value="gte">Average ≥ value</option>
             <option value="gt">Average &gt; value</option>
-            <option value="lte">Average ≤ value</option>
+            <option value="eq">Average = value</option>
             <option value="lt">Average &lt; value</option>
           </select>
           <input

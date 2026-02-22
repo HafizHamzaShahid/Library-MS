@@ -61,7 +61,7 @@ function UpdateProductPage() {
     <div className="page">
       <h1>Update Fashion Product</h1>
       <p className="page-subtitle">
-        Update fields for a single record identified by Product Name (Task 2.2 / 1.6).
+         (Task 2.2 / 1.6).
       </p>
       <form className="book-form" onSubmit={handleSubmit}>
         {error && <div className="alert alert-error">{error}</div>}

@@ -32,7 +32,7 @@ function SeasonTotalsPage() {
     <div className="page">
       <h1>Season Totals</h1>
       <p className="page-subtitle">
-        View total Units Sold, Returns, and Revenue for a given season (Task 2.3 / 1.8).
+         (Task 2.3 / 1.8).
       </p>
       <form className="book-form" onSubmit={handleSubmit}>
         {error && <div className="alert alert-error">{error}</div>}

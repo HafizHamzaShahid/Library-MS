@@ -1,9 +1,7 @@
 import axios from 'axios'
 
-// Configure this baseURL to match your backend
-// Backend is currently running on port 5001 (see server configuration)
 const api = axios.create({
-  baseURL: 'http://localhost:5001',
+  baseURL: 'http://localhost:5000',
 })
 
 // Fashion shop REST API helpers
